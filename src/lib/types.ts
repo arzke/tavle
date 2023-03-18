@@ -5,7 +5,7 @@ export interface ComponentDefinition {
 	props: Record<string, unknown>;
 }
 
-export type ValueGetter<T> = keyof T | ((value: T) => string);
+export type ValueGetter<T> = keyof T | ((value: T) => string) | ((value: T) => ComponentDefinition);
 
 export type SortFunction<T> = (a: T, b: T) => SortReturn;
 export type SortReturn = -1 | 0 | 1;
