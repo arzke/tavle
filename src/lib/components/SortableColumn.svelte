@@ -6,8 +6,10 @@
 	type T = $$Generic;
 
 	export let column: Column<T>;
+	let className = '';
+	export { className as class };
 
-	let sortBy: SortBy | null = null;
+	let sortBy: SortBy | 'unsorted' = 'unsorted';
 
 	let rows: T[];
 
@@ -19,32 +21,36 @@
 		column.isSortable && 'sortBy' in column ? column.sortBy : sortByStringAttribute(column.value);
 
 	const sortRows = () => {
-		const sortedRows = rows.sort(sortBy === 'ascending' ? sortFunction : reverse<T>(sortFunction));
+		const sortedRows = rows.sort(sortBy === 'descending' ? reverse<T>(sortFunction) : sortFunction);
 
 		rowsStore.set(sortedRows);
 
-		sortBy = sortBy === 'ascending' ? 'descending' : 'ascending';
+		sortBy = sortBy === 'descending' ? 'ascending' : 'descending';
 	};
 </script>
 
-<div
-	class:ascending={sortBy === 'ascending'}
-	class:descending={sortBy === 'descending'}
-	on:click={sortRows}
-	on:keypress={sortRows}
->
-	{column.name}
-</div>
+<th class={className} on:click={sortRows} on:keypress={sortRows}>
+	<div class="container">
+		<span class="column-name">{column.name}</span>
+		<span class={`sorting-arrows ${sortBy}`} />
+	</div>
+</th>
 
 <style>
-	div {
+	.container {
 		cursor: pointer;
+		display: flex;
 	}
-
-	.descending:after {
-		content: 'ᐃ';
+	.column-name {
+		flex-grow: 1;
 	}
-	.ascending:after {
-		content: 'ᐁ';
+	.sorting-arrows.unsorted:after {
+		content: '⇅';
+	}
+	.sorting-arrows.descending:after {
+		content: '↓';
+	}
+	.sorting-arrows.ascending:after {
+		content: '↑';
 	}
 </style>

@@ -8,13 +8,13 @@
 	export let areAllColumnsSortable: boolean;
 
 	let className = '';
-  	export { className as class }
+	export { className as class };
 </script>
 
-<th class={className}>
-	{#if areAllColumnsSortable || column.isSortable}
-		<SortableColumn {column} />
-	{:else}
+{#if areAllColumnsSortable || column.isSortable}
+	<SortableColumn {column} class={className} />
+{:else}
+	<th class={className}>
 		{column.name}
-	{/if}
-</th>
+	</th>
+{/if}
