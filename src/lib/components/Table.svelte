@@ -3,6 +3,7 @@
 	import { rowsStore as rowsStore } from '../stores/row';
 	import type { Column, ComponentDefinition, ValueGetter } from '../types';
 	import RawText from './RawText.svelte';
+	import { activeSort, unsorted, type ActiveSort } from '$lib/stores/activeSort';
 
 	type T = $$Generic;
 
@@ -19,6 +20,7 @@
 	export let columns: Column<T>[];
 	export let rows: T[];
 	export let classes: Partial<TableClasses> = {};
+	export let initialSort: ActiveSort = unsorted;
 
 	let localRows = rows;
 
@@ -26,6 +28,7 @@
 	rowsStore.subscribe<T>((value) => {
 		localRows = value;
 	});
+	activeSort.set(initialSort);
 
 	const cellContent = (text: string) => ({
 		component: RawText,

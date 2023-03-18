@@ -38,6 +38,10 @@
 		{columns}
 		{rows}
 		areAllColumnsSortable={false}
+		initialSort={{
+			columnName: 'username',
+			order: 'ascending'
+		}}
 		classes={{
 			table: 'table',
 			thead: 'table-header',

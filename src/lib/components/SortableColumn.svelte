@@ -14,26 +14,29 @@
 
 	let rows: T[];
 
+	const sortFunction =
+		column.isSortable && 'sortBy' in column ? column.sortBy : sortByStringAttribute(column.value);
+
 	rowsStore.subscribe<T>((value) => {
 		rows = value;
 	});
 	activeSort.subscribe(({ columnName, order }) => {
-		orderBy = columnName === column.name ? order : 'unsorted';
+		if (columnName === column.name) {
+			const sortedRows = rows.sort(
+				order === 'descending' ? reverse<T>(sortFunction) : sortFunction
+			);
+
+			rowsStore.set(sortedRows);
+		}
+
+		const reversedOrderBy = order === 'descending' ? 'ascending' : 'descending'
+		orderBy = columnName === column.name ? reversedOrderBy : 'unsorted';
 	});
 
-	const sortFunction =
-		column.isSortable && 'sortBy' in column ? column.sortBy : sortByStringAttribute(column.value);
-
 	const sortRows = () => {
-		const sortedRows = rows.sort(
-			orderBy === 'descending' ? reverse<T>(sortFunction) : sortFunction
-		);
-
-		rowsStore.set(sortedRows);
-
 		activeSort.set({
 			columnName: column.name as string,
-			order: orderBy === 'descending' ? 'ascending' : 'descending'
+			order: orderBy
 		});
 	};
 </script>
