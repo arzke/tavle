@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { default as HeaderColumn } from './HeaderColumn.svelte';
 	import { rowsStore as rowsStore } from '../stores/row';
-	import type { Column, ValueGetter } from '../types';
+	import type { Column, ComponentDefinition, ValueGetter } from '../types';
+	import RawText from './RawText.svelte';
 
 	type T = $$Generic;
 
@@ -26,28 +27,44 @@
 		localRows = value;
 	});
 
+	const cellContent = (text: string) => ({
+		component: RawText,
+		props: {
+			text
+		}
+	});
+
 	export let areAllColumnsSortable = false;
 
-	const getRowValue = (row: T, valueGetter: ValueGetter<T>) => {
+	const getRowValue = (row: T, valueGetter: ValueGetter<T>): ComponentDefinition => {
 		if (typeof valueGetter === 'function') {
-			return valueGetter(row);
+			const result = valueGetter(row);
+
+			return typeof result === 'string' ? cellContent(result) : result;
 		}
 
-		return row[valueGetter];
+		return cellContent(row[valueGetter] as string);
 	};
 </script>
 
 <table class={classes.table}>
 	<thead class={classes.thead}>
-		{#each columns as column}
-			<HeaderColumn {column} {areAllColumnsSortable} class={classes.th}/>
-		{/each}
+		<tr>
+			{#each columns as column}
+				<HeaderColumn {column} {areAllColumnsSortable} class={classes.th} />
+			{/each}
+		</tr>
 	</thead>
 	<tbody class={classes.tbody}>
 		{#each localRows as row}
 			<tr class={classes.tr}>
 				{#each columns as column}
-					<td class={classes.td}>{getRowValue(row, column.value)}</td>
+					<td class={classes.td}
+						><svelte:component
+							this={getRowValue(row, column.value).component}
+							{...getRowValue(row, column.value).props}
+						/></td
+					>
 				{/each}
 			</tr>
 		{/each}
