@@ -5,8 +5,19 @@
 
 	type T = $$Generic;
 
+	interface TableClasses {
+		table: string;
+		thead: string;
+		tbody: string;
+		tfoot: string;
+		th: string;
+		tr: string;
+		td: string;
+	}
+
 	export let columns: Column<T>[];
 	export let rows: T[];
+	export let classes: Partial<TableClasses> = {};
 
 	let localRows = rows;
 
@@ -26,17 +37,17 @@
 	};
 </script>
 
-<table>
-	<thead>
+<table class={classes.table}>
+	<thead class={classes.thead}>
 		{#each columns as column}
-			<HeaderColumn {column} {areAllColumnsSortable} />
+			<HeaderColumn {column} {areAllColumnsSortable} class={classes.th}/>
 		{/each}
 	</thead>
-	<tbody>
+	<tbody class={classes.tbody}>
 		{#each localRows as row}
-			<tr>
+			<tr class={classes.tr}>
 				{#each columns as column}
-					<td>{getRowValue(row, column.value)}</td>
+					<td class={classes.td}>{getRowValue(row, column.value)}</td>
 				{/each}
 			</tr>
 		{/each}

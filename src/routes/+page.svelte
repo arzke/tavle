@@ -32,4 +32,54 @@
 
 <h1>Welcome to tavle</h1>
 
-<Table {columns} {rows} areAllColumnsSortable={true}/>
+<div>
+	<Table
+		{columns}
+		{rows}
+		areAllColumnsSortable={true}
+		classes={{
+			table: 'table',
+			thead: 'table-header',
+			th: 'table-header-cell',
+			tbody: 'table-body',
+			tfoot: 'table-footer',
+			tr: 'table-row',
+			td: 'table-data-cell'
+		}}
+	/>
+</div>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
+
+	:global(.table) {
+		background: #f2f2f2;
+		border-collapse: collapse;
+		border-radius: 10px;
+		font-family: 'Roboto';
+	}
+	
+	:global(.table-header-cell),
+	:global(.table-data-cell) {
+		padding: 1rem;
+	}
+
+	:global(.table-header) {
+		text-transform: capitalize;
+		border-bottom: 2px solid #b2b2b2;
+		background: #30e5a2;
+		color: #373737;
+	}
+
+	:global(.table-row:not(:last-child)) {
+		border-bottom: 1px solid #d2d2d2;
+	}
+
+	:global(.table-row:nth-child(odd)) {
+		background: #e2e2e2;
+	}
+
+	:global(.table-row:hover) {
+		background: #f8f8f8;
+	}
+</style>
