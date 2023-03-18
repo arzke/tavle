@@ -1,6 +1,6 @@
 import type { SortFunction, SortReturn, ValueGetter } from './types';
 
-export type SortBy = 'ascending' | 'descending';
+export type OrderBy = 'ascending' | 'descending' | 'unsorted';
 
 export const sortByStringAttribute =
 	<T>(attributeGetter: ValueGetter<T>): SortFunction<T> =>

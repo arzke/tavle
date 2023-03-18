@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { reverse, sortByStringAttribute, type SortBy } from '../sort';
+	import { activeSort } from '$lib/stores/activeSort';
+	import { reverse, sortByStringAttribute, type OrderBy } from '../sort';
 	import { rowsStore } from '../stores/row';
 	import type { Column } from '../types';
 
@@ -9,30 +10,38 @@
 	let className = '';
 	export { className as class };
 
-	let sortBy: SortBy | 'unsorted' = 'unsorted';
+	let orderBy: OrderBy = 'unsorted';
 
 	let rows: T[];
 
 	rowsStore.subscribe<T>((value) => {
 		rows = value;
 	});
+	activeSort.subscribe(({ columnName, order }) => {
+		orderBy = columnName === column.name ? order : 'unsorted';
+	});
 
 	const sortFunction =
 		column.isSortable && 'sortBy' in column ? column.sortBy : sortByStringAttribute(column.value);
 
 	const sortRows = () => {
-		const sortedRows = rows.sort(sortBy === 'descending' ? reverse<T>(sortFunction) : sortFunction);
+		const sortedRows = rows.sort(
+			orderBy === 'descending' ? reverse<T>(sortFunction) : sortFunction
+		);
 
 		rowsStore.set(sortedRows);
 
-		sortBy = sortBy === 'descending' ? 'ascending' : 'descending';
+		activeSort.set({
+			columnName: column.name as string,
+			order: orderBy === 'descending' ? 'ascending' : 'descending'
+		});
 	};
 </script>
 
 <th class={className} on:click={sortRows} on:keypress={sortRows}>
 	<div class="container">
 		<span class="column-name">{column.name}</span>
-		<span class={`sorting-arrows ${sortBy}`} />
+		<span class={`sorting-arrows ${orderBy}`} />
 	</div>
 </th>
 
@@ -48,9 +57,9 @@
 		content: '⇅';
 	}
 	.sorting-arrows.descending:after {
-		content: '↓';
+		content: '↑';
 	}
 	.sorting-arrows.ascending:after {
-		content: '↑';
+		content: '↓';
 	}
 </style>
