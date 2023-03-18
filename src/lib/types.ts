@@ -1,3 +1,10 @@
+import type { ComponentType } from 'svelte';
+
+export interface ComponentDefinition {
+	component: ComponentType;
+	props: Record<string, unknown>;
+}
+
 export type ValueGetter<T> = keyof T | ((value: T) => string);
 
 export type SortFunction<T> = (a: T, b: T) => SortReturn;
