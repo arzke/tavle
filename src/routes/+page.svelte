@@ -8,8 +8,6 @@
 		{
 			name: 'id',
 			value: 'id',
-			isSortable: true,
-			sortBy: sortByStringAttribute<User>('id') // This is the default sort
 		},
 		{
 			name: 'username',
@@ -19,11 +17,14 @@
 		},
 		{
 			name: 'email',
-			value: 'email'
+			value: 'email',
+			isSortable: true,
+			sortBy: sortByStringAttribute<User>('email') // This is the default sort function
 		},
 		{
 			name: 'country',
-			value: 'country'
+			value: 'country',
+			isSortable: true,
 		}
 	];
 
@@ -36,7 +37,7 @@
 	<Table
 		{columns}
 		{rows}
-		areAllColumnsSortable={true}
+		areAllColumnsSortable={false}
 		classes={{
 			table: 'table',
 			thead: 'table-header',
