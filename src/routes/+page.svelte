@@ -32,7 +32,7 @@
 
 <h1>Welcome to tavle</h1>
 
-<div>
+<div class="container">
 	<Table
 		{columns}
 		{rows}
@@ -52,34 +52,34 @@
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
 
-	:global(.table) {
+	.container :global(.table) {
 		background: #f2f2f2;
 		border-collapse: collapse;
 		border-radius: 10px;
 		font-family: 'Roboto';
 	}
 	
-	:global(.table-header-cell),
-	:global(.table-data-cell) {
+	.container :global(.table-header-cell),
+	.container :global(.table-data-cell) {
 		padding: 1rem;
 	}
 
-	:global(.table-header) {
+	.container :global(.table-header) {
 		text-transform: capitalize;
 		border-bottom: 2px solid #b2b2b2;
 		background: #30e5a2;
 		color: #373737;
 	}
 
-	:global(.table-row:not(:last-child)) {
+	.container :global(.table-row:not(:last-child)) {
 		border-bottom: 1px solid #d2d2d2;
 	}
 
-	:global(.table-row:nth-child(odd)) {
+	.container :global(.table-row:nth-child(odd)) {
 		background: #e2e2e2;
 	}
 
-	:global(.table-row:hover) {
+	.container :global(.table-row:hover) {
 		background: #f8f8f8;
 	}
 </style>
